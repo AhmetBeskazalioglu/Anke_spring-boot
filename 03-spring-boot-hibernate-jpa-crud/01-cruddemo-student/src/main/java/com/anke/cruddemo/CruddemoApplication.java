@@ -1,6 +1,9 @@
 package com.anke.cruddemo;
 
+import com.anke.cruddemo.dao.FamilyDAO;
+import com.anke.cruddemo.dao.FamilyDAOImpl;
 import com.anke.cruddemo.dao.StudentDAO;
+import com.anke.cruddemo.entity.LombokFamily;
 import com.anke.cruddemo.entity.Student;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,10 +18,11 @@ public class CruddemoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
+	public CommandLineRunner commandLineRunner(StudentDAO studentDAO, FamilyDAO familyDAO) {
 		return runner -> {
-			//createStudent(studentDAO);
-			createMultipleStudents(studentDAO);
+			createStudent(studentDAO);
+			//createMultipleStudents(studentDAO);
+			createFamily(familyDAO);
 		};
 	}
 
@@ -48,7 +52,7 @@ public class CruddemoApplication {
 	private void createStudent(StudentDAO studentDAO) {
 		// Create a student
 		System.out.println("Creating a new student");
-		Student tempStudent = new Student("Anke", "Gunes", "ankegunes@gmail.com");
+		Student tempStudent = new Student("Anke", "Beskazalioglu", "ankebeskazali@gmail.com");
 
 		// save the student
 		studentDAO.save(tempStudent);
@@ -56,5 +60,18 @@ public class CruddemoApplication {
 
 		// display the student by id
 		System.out.println("Saved student: " + tempStudent.getId());
+	}
+
+	private void createFamily(FamilyDAO familyDAO) {
+		// Create a family
+		System.out.println("Creating a new family");
+		LombokFamily tempFamily = new LombokFamily("a","b");
+
+		// save the family
+		familyDAO.save(tempFamily);
+		System.out.println("Saving the family...");
+
+		// display the family by id
+		System.out.println("Saved family: " + tempFamily.getId());
 	}
 }
