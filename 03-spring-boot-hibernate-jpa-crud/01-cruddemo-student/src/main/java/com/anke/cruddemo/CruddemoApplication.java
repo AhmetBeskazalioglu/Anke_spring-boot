@@ -20,10 +20,56 @@ public class CruddemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO, FamilyDAO familyDAO) {
 		return runner -> {
-			createStudent(studentDAO);
-			//createMultipleStudents(studentDAO);
-			createFamily(familyDAO);
+			/*createStudent(studentDAO);
+			createMultipleStudents(studentDAO);
+			createFamily(familyDAO);*/
+			readStudent(studentDAO);
+			readFamily(familyDAO);
 		};
+	}
+
+	private void readFamily(FamilyDAO familyDAO) {
+		// Create a family
+		System.out.println("Creating a new family object ...");
+		LombokFamily tempFamily = new LombokFamily("anke","beskazalioglu");
+
+		// save the family
+		System.out.println("Saving the family ...");
+		familyDAO.save(tempFamily);
+
+		// display id of the saved family
+		int id = tempFamily.getId();
+		System.out.println("Saved family. Generated id: " + id);
+
+		// retrieve the family
+		System.out.println("Getting family with id: " + id);
+		LombokFamily theFamily = familyDAO.findById(id);
+
+		// display the family
+		System.out.println("Get complete: " + theFamily);
+
+
+	}
+
+	private void readStudent(StudentDAO studentDAO) {
+		// Create a student
+		System.out.println("Creating a new student object ...");
+		Student tempStudent = new Student("Anke", "Beskazalioglu", "ab@g.com");
+
+		// save the student
+		System.out.println("Saving the student ...");
+		studentDAO.save(tempStudent);
+
+		// display id of the saved student
+		int id = tempStudent.getId();
+		System.out.println("Saved student. Generated id: " + id);
+
+		// retrieve the student
+		System.out.println("Getting student with id: " + id);
+		Student theStudent = studentDAO.findById(id);
+
+		// display the student
+		System.out.println("Get complete: " + theStudent);
 	}
 
 	private void createMultipleStudents(StudentDAO studentDAO) {

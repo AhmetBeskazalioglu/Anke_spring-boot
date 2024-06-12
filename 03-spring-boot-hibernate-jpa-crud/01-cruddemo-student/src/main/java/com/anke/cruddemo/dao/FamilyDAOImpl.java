@@ -21,4 +21,9 @@ public class FamilyDAOImpl implements FamilyDAO{
     public void save(LombokFamily theFamily) {
         entityManager.persist(theFamily);
     }
+
+    @Override
+    public LombokFamily findById(int id) {
+        return entityManager.find(LombokFamily.class, id);
+    }
 }

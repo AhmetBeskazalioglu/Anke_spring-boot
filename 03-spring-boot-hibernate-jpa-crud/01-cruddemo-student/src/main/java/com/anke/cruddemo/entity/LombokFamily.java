@@ -16,7 +16,7 @@ public class LombokFamily {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private int id;
 
     @NonNull
     @Column(name = "name", nullable = false)
