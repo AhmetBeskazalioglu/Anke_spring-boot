@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository /* This annotation is used to indicate that the class provides the mechanism for
  storage, retrieval, search, update and delete operation on objects.
  It is a specialization of the @Component annotation and allows for implementation classes to be auto-detected through classpath scanning.
@@ -40,5 +42,10 @@ public class StudentDAOImpl implements StudentDAO{
     @Override
     public Student findById(int id) {
         return entityManager.find(Student.class, id);
+    }
+
+    @Override
+    public List<Student> findAll() {
+        return entityManager.createQuery("from Student", Student.class).getResultList();
     }
 }
