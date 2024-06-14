@@ -1,4 +1,4 @@
-package com.anke.Crud;
+package com.anke.jpacrud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
