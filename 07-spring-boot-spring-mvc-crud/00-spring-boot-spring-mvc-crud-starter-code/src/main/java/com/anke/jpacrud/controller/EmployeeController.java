@@ -5,7 +5,7 @@ import com.anke.jpacrud.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +18,8 @@ public class EmployeeController {
     /**
      * Bu metot, Spring Framework tarafından otomatik olarak çağrılır.
      * EmployeeService sınıfını enjekte eder.
-     * Ayrıca birden fazla sınıfın implementasyonu varsa, @Qualifier annotation'ı kullanarak hangi sınıfın enjekte edileceğini belirtebiliriz.
+     * Ayrıca birden fazla sınıfın implementasyonu varsa,
+     *      @Qualifier annotation'ı kullanarak hangi sınıfın enjekte edileceğini belirtebiliriz.
      *
      * @param theEmployeeService
      */
@@ -38,16 +39,47 @@ public class EmployeeController {
      * @param theModel
      * @return
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public String listEmployees(Model theModel) {
-        // get th employees from the db
+        // get the employees from the db
         List<Employee> theEmployees = employeeService.findAll();
 
         // add to the spring model
         theModel.addAttribute("employees", theEmployees);
+        /* theModel nesnesine, "employees" adı altında theEmployees listesini ekler.
+         Bu, View katmanında (görünüm) bu verilerin kullanılabilir olmasını sağlar.
+         Örneğin, bir JSP veya Thymeleaf şablonunda employees adıyla bu verilere erişilebilir.*/
 
-        return "list-employees";
+        return "employees/list-employees";
+        /*Bu, metodun döndüreceği değeri belirtir.
+        Spring Framework, bu dönen değeri kullanarak hangi görünümün (view) render edileceğini belirler.
+        Bu örnekte, "list-employees" adında bir görünüm döndürülür.
+        Bu, genellikle list-employees.jsp veya list-employees.html gibi bir şablon dosyasına karşılık gelir.*/
     }
 
+    @GetMapping("/showFormForAdd")
+    public String showFormForAdd(Model theModel) {
+        Employee theEmployee = new Employee();
+        theModel.addAttribute("employee", theEmployee);
+        return "employees/employee-form";
+    }
 
+    @PostMapping("/save")
+    public String showFormForAdd(@ModelAttribute("employee") Employee theEmployee) {
+        employeeService.save(theEmployee);
+        return "redirect:/employees/list";
+    }
+
+    @GetMapping("/showFormForUpdate/{employeeId}")
+    public String showFormForUpdate(@ModelAttribute("employeeId") int theId, Model theModel) {
+        Employee theEmployee = employeeService.findById(theId);
+        theModel.addAttribute("employee", theEmployee);
+        return "employees/employee-form";
+    }
+
+    @GetMapping("/delete/{employeeId}")
+    public String deleteEmployee(@ModelAttribute("employeeId") int theId) {
+        employeeService.deleteById(theId);
+        return "redirect:/employees/list";
+    }
 }
