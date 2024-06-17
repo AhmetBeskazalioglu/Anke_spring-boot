@@ -2,13 +2,13 @@ package com.anke.demosecurity.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class DemoController {
+public class LoginController {
 
-    @GetMapping("/")
-    public String showHome() {
-        return "home";
+    @GetMapping("/showMyLoginPage")
+    public String showMyLoginPage() {
+
+        return "plain-login";
     }
 }
