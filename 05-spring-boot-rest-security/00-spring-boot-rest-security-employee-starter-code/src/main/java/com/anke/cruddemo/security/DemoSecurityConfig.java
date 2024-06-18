@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 public class DemoSecurityConfig {
 
     // add support for JDBC... no more hardcoding users
-    @Bean
+    /*@Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         // define query to retrieve a user by username
@@ -29,7 +29,7 @@ public class DemoSecurityConfig {
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
                 "select user_id, role from roles where user_id=?");
         return jdbcUserDetailsManager;
-    }
+    }*/
 
 
     @Bean
@@ -43,20 +43,21 @@ public class DemoSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/employees/**").hasRole("ADMIN")
         );
 
+
         // use httpBasic authentication
         http.httpBasic(Customizer.withDefaults());
 
         // disable cross side request forgery (CSRF)
         // CSRF saldırıları, kullanıcıların tarayıcıları üzerinden yetkisiz işlemler yapılmasına olanak tanır.
         // in general, not required for stateless REST APIs that use POST, PUT, DELETE, etc.
-        http.csrf(AbstractHttpConfigurer::disable);
+        //http.csrf(AbstractHttpConfigurer::disable);
         // or
-        // http.csrf(csrf -> csrf.disable());
+        http.csrf(csrf -> csrf.disable());
 
         return http.build();
     }
 
-    /*    @Bean
+    @Bean
     // InMemoryUserDetailsManager kullanıcı bilgilerini hafızada tutar.
     public InMemoryUserDetailsManager userDetailsService() {
 
@@ -80,5 +81,5 @@ public class DemoSecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(john, mary, susan);
-    }*/
+    }
 }
