@@ -1,7 +1,6 @@
 package com.anke.cruddemo;
 
 import com.anke.cruddemo.dao.FamilyDAO;
-import com.anke.cruddemo.dao.FamilyDAOImpl;
 import com.anke.cruddemo.dao.StudentDAO;
 import com.anke.cruddemo.entity.LombokFamily;
 import com.anke.cruddemo.entity.Student;
@@ -22,16 +21,76 @@ public class CruddemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO, FamilyDAO familyDAO) {
 		return runner -> {
-			/*createStudent(studentDAO);
+			createStudent(studentDAO);
 			createMultipleStudents(studentDAO);
-			createFamily(familyDAO);*/
+			createFamily(familyDAO);
 
 			//readStudent(studentDAO);
 			//readFamily(familyDAO);
 
-			queryForStudents(studentDAO);
-			queryForFamilies(familyDAO);
+			//queryForStudents(studentDAO);
+			//queryForFamilies(familyDAO);
+			
+			//queryForStudentsByLastName(studentDAO);
+			//queryForFamiliesByLastName(familyDAO);
+
+			//updateStudent(studentDAO);
+			//updateFamily(familyDAO);
+
+			//deleteStudent(studentDAO);
+			//deleteFamily(familyDAO);
+
+			//deleteAllStudents(studentDAO);
+			//deleteAllFamilies(familyDAO);
 		};
+	}
+
+	private void deleteAllFamilies(FamilyDAO familyDAO) {
+		System.out.println("Deleted all families");
+		int deletedFamilies = familyDAO.deleteAll();
+		System.out.println("Deleted families: " + deletedFamilies);
+	}
+
+	private void deleteAllStudents(StudentDAO studentDAO) {
+		System.out.println("Deleted all students");
+		int deletedStudents = studentDAO.deleteAll();
+		System.out.println("Deleted students: " + deletedStudents);
+	}
+
+	private void deleteFamily(FamilyDAO familyDAO) {
+		familyDAO.delete(2);
+		System.out.println("Deleted family");
+
+	}
+
+	private void deleteStudent(StudentDAO studentDAO) {
+		studentDAO.delete(2);
+		System.out.println("Deleted student");
+	}
+
+	private void updateFamily(FamilyDAO familyDAO) {
+		familyDAO.update(familyDAO.findById(1));
+		System.out.println("Updated family");
+
+	}
+
+	private void updateStudent(StudentDAO studentDAO) {
+		studentDAO.update(studentDAO.findById(1));
+		System.out.println("Updated student");
+	}
+
+	private void queryForFamiliesByLastName(FamilyDAO familyDAO) {
+		List<LombokFamily> families = familyDAO.findByLastName("b");
+		for (LombokFamily family : families) {
+			System.out.println(family);
+		}
+	}
+
+	private void queryForStudentsByLastName(StudentDAO studentDAO) {
+		List<Student> students = studentDAO.findByLastName("Beskazalioglu");
+		for (Student student : students) {
+			System.out.println(student);
+		}
 	}
 
 	private void queryForFamilies(FamilyDAO familyDAO) {

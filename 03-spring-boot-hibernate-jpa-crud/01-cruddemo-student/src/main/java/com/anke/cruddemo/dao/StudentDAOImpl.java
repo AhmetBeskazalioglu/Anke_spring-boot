@@ -46,6 +46,35 @@ public class StudentDAOImpl implements StudentDAO{
 
     @Override
     public List<Student> findAll() {
-        return entityManager.createQuery("from Student", Student.class).getResultList();
+        return entityManager.createQuery("from Student order by firstName desc", Student.class).getResultList();
+    }
+
+    @Override
+    public List<Student> findByLastName(String lastName) {
+        return entityManager.createQuery("from Student where lastName=:thePlaceHolder", Student.class)
+                .setParameter("thePlaceHolder", lastName)
+                .getResultList();
+    }
+
+    @Transactional
+    @Override
+    public void update(Student theStudent) {
+        Student updatedStudent = findById(theStudent.getId());
+        updatedStudent.setLastName("updated last name");
+        entityManager.merge(updatedStudent);
+
+    }
+
+    @Transactional
+    @Override
+    public void delete(int id) {
+        entityManager.remove(findById(id));
+    }
+
+    @Transactional
+    @Override
+    public int deleteAll() {
+        int count = entityManager.createQuery("delete from Student").executeUpdate();
+        return count;
     }
 }
