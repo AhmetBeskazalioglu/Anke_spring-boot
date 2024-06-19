@@ -31,31 +31,42 @@ public class SecurityConfig {
     }*/
 
 
-
-    /*@Bean
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(configurer -> configurer
-                .requestMatchers(HttpMethod.GET, "/api/employees").hasRole("EMPLOYEE")
-                .requestMatchers(HttpMethod.GET, "/api/employees/**").hasRole("EMPLOYEE")
-                .requestMatchers(HttpMethod.POST, "/api/employees").hasAnyRole("MANAGER")
-                .requestMatchers(HttpMethod.PUT, "/api/employees").hasAnyRole("MANAGER")
-                .requestMatchers(HttpMethod.DELETE, "/api/employees/**").hasRole("ADMIN")
-        );
+        http
+                .authorizeHttpRequests(configurer -> configurer
+                        .requestMatchers(HttpMethod.GET, "/employees/list/").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET, "/employees/showFormForAdd").hasAnyRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/employees/showFormForUpdate/**").hasAnyRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/employees/delete/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/showMyLoginPage")
+                        .loginProcessingUrl("/authenticateTheUser")
+                        .permitAll()
+                )
+                .logout(logout -> logout.permitAll()
+                )
+                .exceptionHandling(configurer -> configurer
+                        .accessDeniedPage("/access-denied")
+                )
+        ;
 
 
         // use httpBasic authentication
-        http.httpBasic(Customizer.withDefaults());
+        //http.httpBasic(Customizer.withDefaults());
 
         // disable cross side request forgery (CSRF)
         // CSRF saldırıları, kullanıcıların tarayıcıları üzerinden yetkisiz işlemler yapılmasına olanak tanır.
         // in general, not required for stateless REST APIs that use POST, PUT, DELETE, etc.
         //http.csrf(AbstractHttpConfigurer::disable);
         // or
-        http.csrf(csrf -> csrf.disable());
+        //http.csrf(csrf -> csrf.disable());
 
         return http.build();
-    }*/
+    }
 
     @Bean
     // InMemoryUserDetailsManager kullanıcı bilgilerini hafızada tutar.
